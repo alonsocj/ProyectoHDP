@@ -56,6 +56,9 @@ class Persona(models.Model):
         managed = False
         db_table = 'persona'
 
+    def __str__(self):
+        return '{}'.format(self.dui)
+
 
 class Registro(models.Model):
     id_registro = models.AutoField(primary_key=True)
