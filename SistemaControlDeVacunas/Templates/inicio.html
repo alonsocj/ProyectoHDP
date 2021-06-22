@@ -3,11 +3,6 @@
 {% load static %}
 {% block head %}
 
-<script src={% static 'lib/highcharts/highcharts.js' %}></script>
-<script src={% static 'lib/highcharts/modules/exporting.js' %}></script>
-<script src={% static 'lib/highcharts/modules/export-data.js' %}></script>
-<script src={% static 'lib/highcharts/modules/accessibility.js' %}></script>
-
 {% endblock %}
 
 {% block content %}
@@ -25,7 +20,7 @@
     </h1>
     <br /><br />
   </div>
-  
+
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-12">
@@ -33,8 +28,18 @@
       </div>
     </div>
   </div>
-  <script type="application/javascript">
-  Highcharts.chart('container', {
+{% endblock%}
+
+{% block scripts %}
+
+<script src={% static 'lib/highcharts/highcharts.js' %}></script>
+<script src={% static 'lib/highcharts/modules/exporting.js' %}></script>
+<script src={% static 'lib/highcharts/modules/export-data.js' %}></script>
+<script src={% static 'lib/highcharts/modules/accessibility.js' %}></script>
+<script src={% static 'lib/highcharts/modules/series-label.js' %}></script>
+
+<script type="application/javascript">
+Highcharts.chart('container', {
     chart: {
         type: 'column'
     },
@@ -72,7 +77,7 @@
     tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} Personas</b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.1} Personas</b></td></tr>',
         footerFormat: '</table>',
         shared: true,
         useHTML: true
@@ -87,15 +92,9 @@
         name: 'Departamentos',
         showInLegend: false,
         colorByPoint: true,
-        data: {graf_vacunados}
+        data: {{ graf_vacunados|safe }}
 
     },]
 });
-  </script>
-{% endblock%}
-
-{% block scripts %}
-
-
-
+</script>
 {% endblock %}

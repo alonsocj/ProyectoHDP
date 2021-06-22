@@ -16,6 +16,9 @@ class Departamento(models.Model):
         managed = False
         db_table = 'departamento'
 
+    def __str__(self):
+        return '{}'.format(self.nombre_departamento)
+
 
 class Dosis(models.Model):
     numero_dosis = models.IntegerField(primary_key=True)
@@ -34,6 +37,9 @@ class Municipio(models.Model):
         managed = False
         db_table = 'municipio'
 
+    def __str__(self):
+        return '{}'.format(self.nombre_municipio)
+
 
 class Persona(models.Model):
     dui = models.CharField(primary_key=True, max_length=10)
@@ -46,6 +52,9 @@ class Persona(models.Model):
     class Meta:
         managed = False
         db_table = 'persona'
+
+    def __str__(self):
+        return '{}'.format(self.dui)
 
 
 class Registro(models.Model):
@@ -68,3 +77,6 @@ class TipoVacuna(models.Model):
     class Meta:
         managed = False
         db_table = 'tipo_vacuna'
+
+    def __str__(self):
+        return '{}'.format(self.nombre_vacuna)
