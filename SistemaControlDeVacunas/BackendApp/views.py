@@ -23,6 +23,14 @@ def logout(request):
 class HomePage(TemplateView):
     model = Registro
     template_name = "inicio.html"
+
+    def cont_Mujeres(self):
+        averange = (Persona.objects.filter(sexo = 'F').count()/Persona.objects.filter().count())*100
+        return averange
+    
+    def cont_Hombres(self):
+        averange = (Persona.objects.filter(sexo = 'M').count()/Persona.objects.filter().count())*100
+        return averange
     
     def graf_vacunados(self):
         data = []
@@ -46,6 +54,8 @@ class HomePage(TemplateView):
         context = super().get_context_data(**kwargs)
         context['Home'] = 'Home'
         context['graf_vacunados'] = self.graf_vacunados()
+        context['contador_Mujeres'] = self.cont_Mujeres()
+        context['contador_Hombres'] = self.cont_Hombres()
         return context
       
 class RegistrarPersona(CreateView):
