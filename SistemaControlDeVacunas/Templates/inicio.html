@@ -1,10 +1,101 @@
 {% extends 'main.html' %}
 
+{% load static %}
 {% block head %}
+
+<script src={% static 'lib/highcharts/highcharts.js' %}></script>
+<script src={% static 'lib/highcharts/modules/exporting.js' %}></script>
+<script src={% static 'lib/highcharts/modules/export-data.js' %}></script>
+<script src={% static 'lib/highcharts/modules/accessibility.js' %}></script>
 
 {% endblock %}
 
-{% block content %} {% endblock content %}
+{% block content %}
+<div class="container">
+    <h1>
+      <p
+        style="
+          text-align: center;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+            Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        "
+      >
+        ESTADISTICAS COVID-19<br />
+      </p>
+    </h1>
+    <br /><br />
+  </div>
+  
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div id="container"></div>
+      </div>
+    </div>
+  </div>
+  <script type="application/javascript">
+  Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Personas Vacunadas'
+    },
+    subtitle: {
+        text: 'Por Departamento'
+    },
+    xAxis: {
+        categories: [
+            'Ahuachapan',
+            'Santa Ana',
+            'Sonsonate',
+            'Chalatenango',
+            'La Libertad',
+            'San Salvador',
+            'Cuscatlan',
+            'La Paz',
+            'Cabañas',
+            'San Vicente',
+            'Usulutan',
+            'San Miguel',
+            'Morazan',
+            'La Union'
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Cantidad Personas'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} Personas</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Departamentos',
+        showInLegend: false,
+        colorByPoint: true,
+        data: {graf_vacunados}
+
+    },]
+});
+  </script>
+{% endblock%}
 
 {% block scripts %}
+
+
+
 {% endblock %}
