@@ -1,8 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Departamento, Registro, Persona, Municipio
 from django.views.generic.base import TemplateView
 
 # Create your views here.
+def login(request):
+    return render(request,'login.html')
+
+def logout(request):
+    return render(request,'login.html')
+    
 
 
 class HomePage(TemplateView):
