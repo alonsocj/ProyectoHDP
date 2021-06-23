@@ -9,9 +9,20 @@
     {% csrf_token %}
     {{ form.as_p }} 
     {{ form2.as_p }} 
-    <button type="submit">Agregar</button>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>    
+    {% endif %}
+    <button class = "btn btn-primary" type="submit">Registrar</button>
+    <a class= "btn btn-primary" href="{% url 'ConsultarPersona' %}">Cancelar </a>
+    
 </form>
+
 {% endblock content %}
 
 {% block scripts %}
 {% endblock %}
+

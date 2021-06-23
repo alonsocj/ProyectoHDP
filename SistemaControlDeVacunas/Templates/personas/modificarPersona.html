@@ -8,7 +8,8 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }} 
-    <button type="submit">Modificar</button>
+    <button class = "btn btn-warning" type="submit">Modificar</button>
+    <a class= "btn btn-primary" href="{% url 'ConsultarPersona' %}">Cancelar </a>
 </form>
 {% endblock content %}
 

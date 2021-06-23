@@ -71,8 +71,6 @@ class Registro(models.Model):
         managed = False
         db_table = 'registro'
 
-        unique_together = ('dui', 'numero_dosis',)
-
 
 class TipoVacuna(models.Model):
     nombre_vacuna = models.CharField(primary_key=True, max_length=50)

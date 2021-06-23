@@ -4,7 +4,21 @@
 
 {% endblock %}
 
-{% block content %} {% endblock content %}
+{% block content %} 
+<form method="post">
+    {% csrf_token %}
+    <h3>¿Desea eliminar el registro de {{object.dui}} del sistema?</h3>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>    
+    {% endif %}
+    <button class = "btn btn-danger" type="submit">Si, eliminar </button>
+    <a class= "btn btn-primary" href="{% url 'ConsultarRegistro' %}">Cancelar </a>
+</form>
+{% endblock content %}
 
 {% block scripts %}
 {% endblock %}

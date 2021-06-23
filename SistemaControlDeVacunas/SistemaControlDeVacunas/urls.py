@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('BackendApp.urls')),
     path('accounts/',include('django.contrib.auth.urls')),
+    path('import/', include('Import_Csv.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

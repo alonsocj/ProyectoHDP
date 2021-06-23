@@ -2,13 +2,7 @@
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
-<style>
-    .btn{
-        background-color: #dd9700;
-        color: black;
-        cursor: pointer;
-    }
-    </style>
+
 {% endblock %}
 
 <body>
@@ -16,7 +10,7 @@
   <div class="container">
     <h1><p style="text-align: center;font-family:-apple-system, 
     BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', 
-    sans-serif;">MODIFICAR PERSONA<br></p></h1>
+    sans-serif;">CONSULTAR REGISTRO<br></p></h1>
      <br><br>
   </div>
 
@@ -25,31 +19,29 @@
     <table id="data" class="table table-striped table-bordered dt-responsive nowrap" style="margin: 0 auto; width:50%">
         <thead>
             <tr>
+                <th scope="col" style="width: 60%;">Dosis</th>
                 <th scope="col" style="width: 60%;">Dui</th>
-                <th scope="col" style="width: 60%;">Nombre</th>
-                <th scope="col" style="width: 50%;">Apellido</th>
-                <th scope="col" style="width: 10%;">Sexo</th>
-                <th scope="col" style="width: 10%;">Edad</th>
-                <th scope="col" style="width: 10%;">Municipio</th>
-                <th scope="col" style="width: 10%;">Departamento</th>
-                <th scope="col" style="width: 20%;">Opciones</th>
+                <th scope="col" style="width: 50%;">Vacuna</th>
+                <th scope="col" style="width: 10%;">Fecha de Vacunacion</th>
+                <th scope="col" style="width: 20%;">Modificar</th>
+                <th scope="col" style="width: 20%;">Eliminar</th>
             </tr>
         </thead>
         <tbody>
-            {% for persona in object_list %}
+            {% for registro in object_list %}
             <tr>
-                <td>{{persona.dui}}</td>
-                <td>{{persona.nombre}}</td>
-                <td>{{persona.apellido}}</td>
-                <td>{{persona.sexo}}</td>
-                <td>{{persona.edad}}</td>
-                <td>{{persona.id_municipio.nombre_municipio}}</td>
-                <td>{{persona.id_municipio.id_departamento.nombre_departamento}}</td>
+                <td>{{registro.numero_dosis}}</td>
+                <td>{{registro.dui}}</td>
+                <td>{{registro.nombre_vacuna}}</td>
+                <td>{{registro.fecha_vacunacion}}</td>
                 <td>
                     <a
-                      href="{% url 'ModificarPersona' persona.dui %}"
-                      class="btn" >
-                     <i class="fas fa-edit"><b>Modificar</b></i>
+                      href="{% url 'ModificarRegistro' registro.id_registro %}" class="btn btn-warning"> <i class="fas fa-edit"><b>Modificar</b></i>
+                    </a>
+                </td>
+                <td>
+                    <a
+                      href="{% url 'EliminarRegistro' registro.id_registro %}" class="btn btn-danger" > <i class="fas fa-edit"><b>Eliminar</b></i>
                     </a>
                 </td>
             </tr>
