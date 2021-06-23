@@ -7,9 +7,9 @@
 {% block content %} 
 <form method="post">
     {% csrf_token %}
-    <h3>¿Desea eliminar la persona de {{object.dui}} del sistema?</h3>
+    <h3>¿Desea eliminar la persona {{object.dui}} y todos sus registros del sistema?</h3
     <button class = "btn btn-danger" type="submit">Si, eliminar </button>
-    <a class= "btn btn-default" href="{% url 'Home' %}">Cancelar </a>
+    <a class= "btn btn-primary" href="{% url 'ConsultarPersona' %}">Cancelar </a>
 </form>
 {% endblock content %}
 
