@@ -2,7 +2,7 @@
 
 {% load static %}
 {% block head %}
-
+<link rel="stylesheet" href={% static 'css/home.css' %}>
 {% endblock %}
 
 {% block content %}
@@ -21,13 +21,24 @@
     <br /><br />
   </div>
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-12">
-        <div id="container"></div>
-      </div>
-    </div>
+<div class="contenido">
+    <div class="element">
+    <h2>Primer Dosis</h2>
+  <h3>{{ primer_dosis }}</h3>
+</div>
+<div class="element">
+  <h2>Segunda Dosis</h2>
+  <h3>{{ segunda_dosis }}</h3>
   </div>
+  <div class="element">
+  <h2>Total Dosis Aplicadas</h2>
+  <h3>{{ total_dosis }}</h3></div>
+</div>
+</br>
+</br>
+{% include 'graficos/porDepartamento.html' %}
+{% include 'graficos/porSexo.html' %}
+
 {% endblock%}
 
 {% block scripts %}
@@ -36,65 +47,123 @@
 <script src={% static 'lib/highcharts/modules/exporting.js' %}></script>
 <script src={% static 'lib/highcharts/modules/export-data.js' %}></script>
 <script src={% static 'lib/highcharts/modules/accessibility.js' %}></script>
-<script src={% static 'lib/highcharts/modules/series-label.js' %}></script>
+<!--<script src={% static 'lib/highcharts/modules/series-label.js' %}></script>-->
+<script src={% static 'lib/highcharts/modules/data.js' %}></script>
+<script src={% static 'lib/highcharts/modules/drilldown.js' %}></script>
 
 <script type="application/javascript">
-Highcharts.chart('container', {
+  Highcharts.chart('container', {
+      chart: {
+          type: 'column'
+      },
+      title: {
+          text: 'Personas Vacunadas'
+      },
+      subtitle: {
+          text: 'Por Departamento'
+      },
+      xAxis: {
+          categories: [
+              'Ahuachapan',
+              'Santa Ana',
+              'Sonsonate',
+              'Chalatenango',
+              'La Libertad',
+              'San Salvador',
+              'Cuscatlan',
+              'La Paz',
+              'Cabañas',
+              'San Vicente',
+              'Usulutan',
+              'San Miguel',
+              'Morazan',
+              'La Union'
+          ],
+          crosshair: true
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: 'Cantidad Personas'
+          }
+      },
+      tooltip: {
+          headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+              '<td style="padding:0"><b>{point.y:.1} Personas</b></td></tr>',
+          footerFormat: '</table>',
+          shared: true,
+          useHTML: true
+      },
+      plotOptions: {
+          column: {
+              pointPadding: 0.2,
+              borderWidth: 0
+          }
+      },
+      series: [{
+          name: 'Departamentos',
+          showInLegend: false,
+          colorByPoint: true,
+          data: {{ graf_vacunados|safe }}
+  
+      },]
+  });
+  </script>
+
+<script type="application/javascript">
+Highcharts.chart('container2', {
     chart: {
-        type: 'column'
+        type: 'pie'
     },
     title: {
-        text: 'Personas Vacunadas'
+        text: 'Porcentaje de personas Vacunadas'
     },
     subtitle: {
-        text: 'Por Departamento'
+        text: 'Mujeres y Hombres'
     },
-    xAxis: {
-        categories: [
-            'Ahuachapan',
-            'Santa Ana',
-            'Sonsonate',
-            'Chalatenango',
-            'La Libertad',
-            'San Salvador',
-            'Cuscatlan',
-            'La Paz',
-            'Cabañas',
-            'San Vicente',
-            'Usulutan',
-            'San Miguel',
-            'Morazan',
-            'La Union'
-        ],
-        crosshair: true
-    },
-    yAxis: {
-        min: 0,
-        title: {
-            text: 'Cantidad Personas'
-        }
-    },
-    tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1} Personas</b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-    },
-    plotOptions: {
-        column: {
-            pointPadding: 0.2,
-            borderWidth: 0
-        }
-    },
-    series: [{
-        name: 'Departamentos',
-        showInLegend: false,
-        colorByPoint: true,
-        data: {{ graf_vacunados|safe }}
 
-    },]
+    accessibility: {
+        announceNewData: {
+            enabled: true
+        },
+        point: {
+            valueSuffix: '%'
+        }
+    },
+
+    plotOptions: {
+        series: {
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}: {point.y:.1f}%'
+            }
+        }
+    },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> Del total vacunados<br/>'
+    },
+
+    series: [
+        {
+            name: "Sexo",
+            colorByPoint: true,
+            data: [
+                {
+                    name: "Mujeres",
+                    y: {{ contador_Mujeres|safe }},
+                    //drilldown: "Chrome"
+                },
+                {
+                    name: "Hombres",
+                    y: {{ contador_Hombres|safe }},
+                    //drilldown: "Firefox"
+                },
+            ]
+        }
+    ],
 });
 </script>
 {% endblock %}

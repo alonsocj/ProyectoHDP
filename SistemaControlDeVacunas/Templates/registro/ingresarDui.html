@@ -1,0 +1,26 @@
+{% extends '../main.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %} 
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }} 
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>    
+    {% endif %}
+    <button class = "btn btn-primary" type="submit">Ingresar</button>
+    <a class= "btn btn-primary" href="{% url 'ConsultarRegistro' %}">Cancelar </a>
+</form>
+{% endblock content %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+{% endblock %}

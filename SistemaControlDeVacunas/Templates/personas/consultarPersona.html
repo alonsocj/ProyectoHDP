@@ -26,7 +26,8 @@
                 <th scope="col" style="width: 10%;">Edad</th>
                 <th scope="col" style="width: 10%;">Municipio</th>
                 <th scope="col" style="width: 10%;">Departamento</th>
-                <th scope="col" style="width: 20%;">Opciones</th>
+                <th scope="col" style="width: 20%;">Modificar</th>
+                <th scope="col" style="width: 20%;">Eliminar</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +40,16 @@
                 <td>{{persona.edad}}</td>
                 <td>{{persona.id_municipio.nombre_municipio}}</td>
                 <td>{{persona.id_municipio.id_departamento.nombre_departamento}}</td>
+                <td>
+                    <a
+                      href="{% url 'ModificarPersona' persona.dui %}" class="btn btn-warning"> <i class="fas fa-edit"><b>Modificar</b></i>
+                    </a>
+                </td>
+                <td>
+                    <a
+                      href="{% url 'EliminarPersona' persona.dui %}" class="btn btn-danger" > <i class="fas fa-edit"><b>Eliminar</b></i>
+                    </a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

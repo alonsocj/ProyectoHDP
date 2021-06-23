@@ -4,7 +4,21 @@
 
 {% endblock %}
 
-{% block content %} {% endblock content %}
+{% block content %} 
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }} 
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>    
+    {% endif %}
+    <button class = "btn btn-warning" type="submit">Modificar</button>
+    <a class= "btn btn-primary" href="{% url 'ConsultarRegistro' %}">Cancelar </a>
+</form>
+{% endblock content %}
 
 {% block scripts %}
 {% endblock %}
