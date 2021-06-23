@@ -24,6 +24,15 @@ class HomePage(TemplateView):
     model = Registro
     template_name = "inicio.html"
 
+    def total_dosis(self):
+        return self.cont_primerDosis() + self.cont_segundaDosis()
+
+    def cont_primerDosis(self):
+        return Registro.objects.filter(numero_dosis = 1).count()
+
+    def cont_segundaDosis(self):
+        return Registro.objects.filter(numero_dosis = 2).count()
+
     def cont_Mujeres(self):
         averange = (Persona.objects.filter(sexo = 'F').count()/Persona.objects.filter().count())*100
         return averange
@@ -56,6 +65,9 @@ class HomePage(TemplateView):
         context['graf_vacunados'] = self.graf_vacunados()
         context['contador_Mujeres'] = self.cont_Mujeres()
         context['contador_Hombres'] = self.cont_Hombres()
+        context['primer_dosis'] = self.cont_primerDosis()
+        context['segunda_dosis'] = self.cont_segundaDosis()
+        context['total_dosis'] = self.total_dosis
         return context
       
 class RegistrarPersona(CreateView):
