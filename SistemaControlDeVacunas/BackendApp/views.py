@@ -1,15 +1,14 @@
-from django.shortcuts import render,redirect
+
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .models import Departamento, Registro, Persona, Municipio
+#from django.contrib import messages
+from .models import Departamento, Dosis, Registro, Persona, Municipio, TipoVacuna
 from django.views.generic.base import TemplateView
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.views.generic.detail import DetailView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, request
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from .forms import PersonaForm, PersonaForm1, RegistroForm1, PersonaForm2
-from django.contrib import messages
+from .forms import PersonaForm, PersonaForm1, RegistroForm1, PersonaForm2,VacunaForm1,DosisForm1
 
 # Create your views here.
 def login(request):
@@ -18,7 +17,6 @@ def login(request):
 def logout(request):
     return render(request,'login.html')
     
-
 
 class HomePage(TemplateView):
     model = Registro
@@ -57,7 +55,6 @@ class RegistrarPersona(CreateView):
 class ModificarPersonaTabla(ListView):
     model = Persona
     template_name = 'personas/modificar.html'
-
 
 class ModificarPersona(UpdateView):
     model = Persona
@@ -127,3 +124,50 @@ class registrarVacunado(CreateView):
         else:
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
+#CRUD DE VACUNA
+class ConsultarVacuna(ListView):
+    model=TipoVacuna
+    template_name='vacunas/consultarVacuna.html'
+   
+class AgregarVacuna(CreateView):
+    model=TipoVacuna
+    form_class=VacunaForm1
+    template_name='vacunas/ingresarVacuna.html'
+    success_url=reverse_lazy('ConsultarVacuna')
+
+class ModificarVacuna(UpdateView):
+    model=TipoVacuna
+    form_class=VacunaForm1
+    template_name='vacunas/ingresarVacuna.html'
+    success_url=reverse_lazy('ConsultarVacuna')
+
+   # def post(self,request,*args,**kwargs):
+   #     self.object=self.get_object
+    #    form=self.form_class(request.POST)
+     #   if form.is_valid():
+      #      form=form.save()
+       #     return HttpResponseRedirect(self.success_url)
+       # else:
+            # return redirect('ModificarVacuna',id_re)
+         #  return self.render_to_response(self.get_context_data(form=form))
+
+class EliminarVacuna(DeleteView):
+    model=TipoVacuna
+    template_name='vacunas/eliminarVacuna.html'
+    success_url=reverse_lazy('ConsultarVacuna')
+
+#DOSIS
+class ConsultarDosis(ListView):
+    model=Dosis
+    template_name='dosis/consultarDosis.html'
+
+class AgregarDosis(CreateView):
+    model=Dosis
+    form_class=DosisForm1
+    template_name='dosis/agregarDosis.html'
+    success_url=reverse_lazy('ConsultarDosis')
+
+class EliminarDosis(DeleteView):
+    model=Dosis
+    template_name='dosis/eliminarDosis.html'
+    success_url=reverse_lazy('ConsultarDosis')

@@ -1,0 +1,20 @@
+{% extends '../main.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        <h3>¿Desea eliminar el siguiente número de dosis?</h3>
+        <label>Nombre de vacuna {{object.numero_dosis}}: </label>
+        <br>
+
+        <button class="btn btn-danger" type="submit">Eliminar</button>
+        <a class="btn btn-default" href="{% url 'ConsultarDosis' %}">Cancelar</a>
+    </form>
+{% endblock content %}
+
+{% block scripts %}
+{% endblock %}

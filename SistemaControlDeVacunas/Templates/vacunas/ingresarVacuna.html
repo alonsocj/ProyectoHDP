@@ -4,7 +4,44 @@
 
 {% endblock %}
 
-{% block content %} {% endblock content %}
+{% block content %} 
+
+
+<div class="content">
+    <h1 class="logo"><b>Agregar Vacuna</b></h1><br><br>
+
+    <div class="contact-wrapper">
+       
+        <div class="contact-form">
+            <form method='POST' action="">
+                {% csrf_token %}
+                <p>
+                    <label for="{{form.nombre_vacuna.name}}">{{form.nombre_vacuna.label}}</label>
+                     {{form.nombre_vacuna}}
+                </p>
+                <p>
+                    <label for="{{form.fabricante.name}}">{{form.fabricante.label}}</label>
+                    {{form.fabricante}}
+                </p>
+                <p>
+                    <label for="{{form.pais_fabricacion.name}}">{{form.pais_fabricacion.label}}</label>
+                    {{form.pais_fabricacion}}
+                </p>
+                {% if form.errors %}
+                 <div class="alert alert-danger"><p>El tipo de vacuna ingresada ya existe, intente nuevamente</p></div>
+                 {% endif %}
+                <p class="block">
+                    <button type="submit">AGREGAR EL TIPO DE VACUNA</button>
+                </p>
+            </form>
+        </div>
+
+    </div>
+    
+</div>
+{% endblock content %}
 
 {% block scripts %}
 {% endblock %}
+
+
