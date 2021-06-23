@@ -6,6 +6,7 @@ from .views import EliminarPersona, ModificarPersonaTabla, EliminarPersonaTabla,
 from .views import  AgregarVacuna ,ConsultarVacuna,ModificarVacuna,EliminarVacuna,ConsultarDosis,AgregarDosis,EliminarDosis
 
 urlpatterns = [
+#Persona
     path('', HomePage.as_view(), name = 'Home'),
     path('registrarpersona/', RegistrarPersona.as_view(), name = 'RegistrarPersona'),
     path('consultarpersona/', ConsultarPersona.as_view(), name = 'ConsultarPersona'),
