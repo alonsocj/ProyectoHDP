@@ -35,11 +35,21 @@ class HomePage(TemplateView):
         return Registro.objects.filter(numero_dosis = 2).count()
 
     def cont_Mujeres(self):
-        averange = (Persona.objects.filter(sexo = 'F').count()/Persona.objects.filter().count())*100
+        person = Persona.objects.filter(sexo = 'F')
+        tot =0
+        for i in range(0,person.count()):
+            tot += Registro.objects.filter(dui = person[i]).count()
+
+        averange = (tot/Registro.objects.filter().count())*100
         return averange
     
     def cont_Hombres(self):
-        averange = (Persona.objects.filter(sexo = 'M').count()/Persona.objects.filter().count())*100
+        person = Persona.objects.filter(sexo = 'M')
+        tot =0
+        for i in range(0,person.count()):
+            tot += Registro.objects.filter(dui = person[i]).count()
+
+        averange = (tot/Registro.objects.filter().count())*100
         return averange
     
     def graf_vacunados(self):
@@ -51,8 +61,10 @@ class HomePage(TemplateView):
                 datos = Municipio.objects.filter(id_departamento=Departamento.objects.get(id_departamento=dep))
 
                 for mun in range(0, datos.count()):
-                    # se hace un conteo de de personas por municipio que estan relacionadas con el departamento que se esta iterando
-                    count += Persona.objects.filter(id_municipio=datos[mun]).count()
+                    # se hace un filtro de personas por municipio que estan relacionadas con el departamento que se esta iterando
+                    person = Persona.objects.filter(id_municipio=datos[mun])
+                    for p in range(0, person.count()):
+                        count += Registro.objects.filter(dui = person[p]).count()
 
                 # se almacena en un array los valores por departamento
                 data.append(count)
@@ -68,7 +80,10 @@ class HomePage(TemplateView):
         context['contador_Hombres'] = self.cont_Hombres()
         context['primer_dosis'] = self.cont_primerDosis()
         context['segunda_dosis'] = self.cont_segundaDosis()
-        context['total_dosis'] = self.total_dosis
+        context['total_dosis'] = self.total_dosis()
+        
+        d=Persona.objects.filter(id_municipio=44)
+        print(str(Persona.objects.filter(id_municipio=1)))
         return context
       
 class RegistrarPersona(CreateView):
