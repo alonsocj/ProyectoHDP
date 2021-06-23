@@ -4,7 +4,18 @@
 
 {% endblock %}
 
-{% block content %} {% endblock content %}
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        <h3>¿Desea eliminar la siguiente vacuna?</h3>
+        <label>Nombre de vacuna {{object.nombre_vacuna}}: </label>
+        <label>Nombre del fabricante {{object.fabricante}}: </label>
+        <label>Pais de fabricación {{object.pais_fabricacion}}: </label>
+
+        <button class="btn btn-danger" type="submit">Eliminar</button>
+        <a class="btn btn-default" href="{% url 'ConsultarVacuna' %}">Cancelar</a>
+    </form>
+{% endblock content %}
 
 {% block scripts %}
 {% endblock %}

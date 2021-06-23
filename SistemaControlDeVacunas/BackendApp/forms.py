@@ -1,6 +1,8 @@
+
 from django import forms
-from django.forms import ModelForm
-from BackendApp.models import Persona, Registro
+from django.forms import ModelForm, widgets
+from BackendApp.models import Persona, Registro,TipoVacuna,Dosis
+
 #Formulario de persona para agregar una nueva.
 class PersonaForm(ModelForm):
     class Meta:
@@ -107,6 +109,46 @@ class RegistroForm1(ModelForm):
                     'numero_dosis': forms.Select(attrs={ 'class': 'form-control','required': True}),
         }
 
+#Utilizado para vacuna
+class VacunaForm1(ModelForm):
+    class Meta:
+        model=TipoVacuna
+        fields='__all__'
+        labels={
+            'nombre_vacuna': 'Nombre de vacuna',
+            'fabricante': 'Fabricante',
+            'pais_fabricacion':'Pais de Fabricación',
+        }
+        widgets={
+            'nombre_vacuna':forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese el nombre de la vacuna','autocomplete':'off'}),
+            'fabricante':forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese el fabricante de la vacuna','autocomplete':'off'}),
+            'pais_fabricacion':forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese el pais de fabricación de la vacuna','autocomplete':'off'})
+        }
+
+ #   def __init__(self, *args, **kwargs):
+ #       super(VacunaForm1, self).__init__(*args, **kwargs)
+ #       instance = getattr(self, 'instance', None)
+ #       if instance and instance.nombre_vacuna:
+ #           self.fields['nombre_vacuna'].required = False
+ #           self.fields['nombre_vacuna'].widget.attrs['disabled'] = 'disabled'
+    
+ #   def clean_dui(self):
+        # As shown in the above answer.
+ #       instance = getattr(self, 'instance', None)
+ #       if instance:
+ #           return instance.nombre_vacuna
+ #       else:
+ #           return self.cleaned_data.get('nombre_vacuna', None)
+
+class DosisForm1(ModelForm):
+    class Meta:
+        model = Dosis
+        fields = ['numero_dosis']
+        labels = {
+            'numero_dosis' : 'Número de dosis',
+        }
+        widgets = {'numero_dosis': forms.NumberInput(attrs={ 'class': 'form-control','required': True,'min':'1','max':'4'}),}
+
 #Para actualizar actualizar registro
 class RegistroForm2(ModelForm):
     class Meta:
@@ -160,3 +202,4 @@ class PersonaForm3(ModelForm):
         }
         widgets = { 'dui': forms.TextInput(attrs={ 'class': 'form-control', 'autocomplete' : 'off', 'data-mask':"00000000-0"}),
         }
+

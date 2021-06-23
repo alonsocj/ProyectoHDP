@@ -1,0 +1,25 @@
+{% extends '../main.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %} 
+<h1>Agregar Dosis en listado</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="{{form.numero_dosis.name}}">{{form.numero_dosis.label}}</label>
+     <p> {{form.numero_dosis}}</p>
+
+     {% if form.errors %}
+     <div class="alert alert-danger"><p>El número de dosis ingresada ya existe, intente nuevamente</p></div>
+ {% endif %}
+                    
+    <button type="submit">AGREGAR DOSIS</button>
+
+</form>
+{% endblock content %}
+
+{% block scripts %}
+{% endblock %}

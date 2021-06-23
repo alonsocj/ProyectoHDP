@@ -1,0 +1,152 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background: none;
+    color: black;
+    font-family: 'Quicksand',sans-serif;
+    padding: 0 1.0em;
+}
+
+.content{
+    max-width:1170;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.5em;
+}
+
+.logo{
+    text-align: center;
+    font-size: 3em;
+}
+.logo span{
+    color:#0b1930;
+}
+.contact-wrapper{
+
+    border-radius: 15px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.158);
+}
+.contact-wrapper > *{
+    padding: 1em;
+}
+.contact-form{
+    border-radius: 15px;
+    background: none;
+    font-size: 20px;
+}
+.contact-form form{
+    display: grid;
+    grid-template-columns: 1fr;
+}
+.contact-form form .block{
+    grid-column: 1/1;
+
+}
+.contact-form form p{ 
+    margin: 0;
+    padding: 1em;
+}
+.contact-form form button, .contact-form form input, .contact-form form textarea{
+    width: 50%;
+    padding: .7em;
+    border: none;
+    background: none;
+    outline: none;
+    color: black;
+    border-bottom: 1px solid #012d80;
+    font-size: 20px;
+}
+.contact-form form button{ 
+background: #141E30;
+border:none;
+text-transform: uppercase;
+padding: 1em;
+border-radius: 30px;
+color: aliceblue;
+}
+.contact-form form button:hover, .contact-form form button:focus{
+    background: #79869b;
+    color: black;
+    transition: background-color 0.6s ease-out;
+    outline: 0;
+}
+header{
+    height: 60px;
+    background: #091324;
+    display: flex;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.menu-toggle{
+  display: none;
+    margin-left: auto;
+    color: aliceblue;
+    line-height: 60px;
+    font-size: 25px;
+    cursor: pointer;
+
+}
+.log a{
+    color: aliceblue;
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 60px;
+    text-transform: uppercase;
+    font-family:Arial, Helvetica, sans-serif;
+}
+#menu{
+    margin-left: auto;
+    color: aliceblue;
+}
+#menu ul li{
+
+    display: inline-block;
+    transition: .6s;
+}
+#menu .nav-list li a{
+    position: relative;
+    color: white;
+    text-decoration: none;
+    line-height: 60px;
+    padding: 0 8px;
+    text-transform: uppercase;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+
+.show{
+ height: 305px !important; 
+ color: aliceblue;  
+}
+
+
+
+@media ( min-width:801px){
+ 
+
+
+    body{
+        padding: 0 0rem;
+    }
+    .content{
+        padding: 0 10rem;
+    }
+    .contact-wrapper{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    .contact-wrapper > *{
+        padding: 2em;
+    }
+    .contact-info h4, .contact-info ul{
+        padding: 1em;
+        text-align: justify;
+    }
+}
+
+
