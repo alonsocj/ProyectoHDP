@@ -7,6 +7,7 @@ from.views import AgregarRegistro, IngresarDui, ConsultarRegistro, ModificarRegi
 
 
 urlpatterns = [
+#Persona
     path('', HomePage.as_view(), name = 'Home'),
     path('registrarpersona/', RegistrarPersona.as_view(), name = 'RegistrarPersona'),
     path('consultarpersona/', ConsultarPersona.as_view(), name = 'ConsultarPersona'),

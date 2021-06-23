@@ -8,7 +8,7 @@
 
 
 <div class="content">
-    <h1 class="logo"><b>Agregar Vacuna</b></h1><br><br>
+    <h1 class="logo"><b>AGREGAR TIPO DE VACUNA</b></h1><br><br>
 
     <div class="contact-wrapper">
        
@@ -30,9 +30,10 @@
                 {% if form.errors %}
                  <div class="alert alert-danger"><p>El tipo de vacuna ingresada ya existe, intente nuevamente</p></div>
                  {% endif %}
-                <p class="block">
-                    <button type="submit">Agregar tipo de vacuna</button>
-                </p>
+                <div class="block">
+                    <button type="submit">Agregar</button>  <button href="http://127.0.0.1:8000/consultarVacuna/">Cancelar</button>
+                </div >
+
             </form>
         </div>
 
