@@ -1,7 +1,4 @@
 
-from django.contrib.auth.decorators import login_required
-
-#from django.contrib import messages
 from .models import Departamento, Dosis, Registro, Persona, Municipio, TipoVacuna
 
 from django.views.generic.base import TemplateView
@@ -210,7 +207,7 @@ class AgregarRegistro(CreateView):
                             messages.warning(request, 'No puede registrar esta dosis si aun no ha registrado la anterior')
                             return redirect('AgregarRegistro', pk)
                 except:
-                    messages.warning(request, 'No existe dosis 1 registrada con este dui')
+                    messages.warning(request, 'No existe dosis 1 registrada con este dui, ingrese la dosi 1 antes por favor')
                     return redirect('AgregarRegistro',pk)
         else:
             return redirect('AgregarRegistro',pk)
@@ -265,6 +262,7 @@ class ModificarRegistro(UpdateView):
                 a = int(dosis.numero_dosis)-1
                 dosis2 = self.second_model.objects.get(numero_dosis=a)
                 registro2 = self.model.objects.get(dui = form.cleaned_data['dui'], numero_dosis = dosis2)
+
                 if form.cleaned_data['nombre_vacuna'] == registro2.nombre_vacuna:
                     if form.cleaned_data['fecha_vacunacion'] > registro2.fecha_vacunacion:
                         form.save()
@@ -353,6 +351,7 @@ class EliminarDosis(DeleteView):
     second_model = Registro
     template_name='dosis/eliminarDosis.html'
     success_url=reverse_lazy('ConsultarDosis')
+
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object

@@ -38,6 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                  {% if object_list %}
                     {% for persona in object_list %}
                     <tr>
                         <td>{{persona.dui}}</td>
@@ -58,6 +59,9 @@
                         </td>
                     </tr>
                     {% endfor %}
+            {% else %}
+            <div class="alert alert-warning"><strong><i class="fas fa-exclamation-triangle"></i> No hay personas ingresadas en el sistema</strong></div>
+            {% endif %}
                 </tbody>
             </table>
         </div>
