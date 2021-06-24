@@ -95,6 +95,17 @@ class RegistrarPersona(CreateView):
     form_class = PersonaForm
     success_url = reverse_lazy('ConsultarPersona')
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            persona = form.save()
+            return HttpResponseRedirect(self.success_url)
+        else:
+            messages.success(request, 'Ya existe una persona registrada con este dui')
+            return self.render_to_response(self.get_context_data(form=form))
+
+
 class ModificarPersona(UpdateView):
     model = Persona
     template_name = 'personas/modificarPersona.html'
@@ -143,7 +154,6 @@ class AgregarRegistro(CreateView):
     second_form_class = PersonaForm2
     success_url = reverse_lazy('ConsultarRegistro')
 
-
     def get_context_data(self, **kwargs):
         context = super(AgregarRegistro, self).get_context_data(**kwargs)
         pk = self.kwargs.get('pk', 0)
@@ -191,10 +201,10 @@ class AgregarRegistro(CreateView):
                                     registro.save()
                                     return HttpResponseRedirect(self.success_url)
                                 else: 
-                                    messages.warning(request, 'La fecha debe ser posterior a la fecha registrada en la dosis anterior')
+                                    messages.warning(request, 'La fecha debe ser posterior a la fecha registrada en la dosis anterior. La fecha de la dosis anterior es : '+str(registro4.fecha_vacunacion)+".")
                                     return redirect('AgregarRegistro', pk)
                             else:
-                                messages.warning(request, 'El tipo de vacuna ingresada no coincide con el registrado en la dosis anterior')
+                                messages.warning(request, 'El tipo de vacuna ingresada no coincide con el registrado en la dosis anterior. La vacuna registrada en la dosis anterior es : '+str(registro4.nombre_vacuna)+".")
                                 return redirect('AgregarRegistro', pk)
                         except:
                             messages.warning(request, 'No puede registrar esta dosis si aun no ha registrado la anterior')
@@ -232,6 +242,7 @@ class ConsultarRegistro(ListView):
 
 class ModificarRegistro(UpdateView):
     model = Registro
+    second_model = Dosis
     template_name = 'registro/modificarRegistro.html'
     form_class = RegistroForm2
     success_url = reverse_lazy('ConsultarRegistro')
@@ -250,16 +261,19 @@ class ModificarRegistro(UpdateView):
                 form.save()
                 return HttpResponseRedirect(self.success_url)
             else:
-                registro2 = self.model.objects.get(numero_dosis = 1)
+                dosis = form.cleaned_data['numero_dosis']
+                a = int(dosis.numero_dosis)-1
+                dosis2 = self.second_model.objects.get(numero_dosis=a)
+                registro2 = self.model.objects.get(dui = form.cleaned_data['dui'], numero_dosis = dosis2)
                 if form.cleaned_data['nombre_vacuna'] == registro2.nombre_vacuna:
                     if form.cleaned_data['fecha_vacunacion'] > registro2.fecha_vacunacion:
                         form.save()
                         return HttpResponseRedirect(self.success_url)
                     else: 
-                        messages.warning(request, 'La fecha debe ser posterior a la de dosis 1')
+                        messages.warning(request, 'La fecha debe ser posterior a la fecha registrada en la dosis anterior. La fecha de la dosis anterior es : '+str(registro2.fecha_vacunacion)+".")
                         return redirect('ModificarRegistro', id_re)
                 else:
-                    messages.warning(request, 'La vacuna debe ser las misma en ambas dosis. Modifique el tipo de vacuna en dosis 1')
+                    messages.warning(request, 'El tipo de vacuna ingresada no coincide con el registrado en la dosis anterior. La vacuna registrada en la dosis anterior es : '+str(registro2.nombre_vacuna)+".")
                     return redirect('ModificarRegistro', id_re)
         else:
             return HttpResponseRedirect(self.success_url)
@@ -275,6 +289,16 @@ class AgregarVacuna(CreateView):
     template_name='vacunas/ingresarVacuna.html'
     success_url=reverse_lazy('ConsultarVacuna')
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            persona = form.save()
+            return HttpResponseRedirect(self.success_url)
+        else:
+            messages.success(request, 'La vacuna ingresada ya esta registrada')
+            return self.render_to_response(self.get_context_data(form=form))
+
 class ModificarVacuna(UpdateView):
     model=TipoVacuna
     form_class=VacunaForm2
@@ -283,8 +307,25 @@ class ModificarVacuna(UpdateView):
 
 class EliminarVacuna(DeleteView):
     model=TipoVacuna
+    second_model = Registro
     template_name='vacunas/eliminarVacuna.html'
     success_url=reverse_lazy('ConsultarVacuna')
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        pk = kwargs['pk']
+        vacuna = self.model.objects.get(nombre_vacuna=pk)
+        try:
+            registro = self.second_model.objects.filter(nombre_vacuna = vacuna.nombre_vacuna)
+            if registro: 
+                messages.warning(request, 'No se puede eliminar esta vacuna, existen registros asociados a ella')
+                return redirect('EliminarVacuna', pk)
+            else:
+                vacuna.delete()
+                return HttpResponseRedirect(self.success_url)
+        except self.second_model.DoesNotExist:
+                vacuna.delete()
+                return HttpResponseRedirect(self.success_url)
 
 #DOSIS
 class ConsultarDosis(ListView):
@@ -297,21 +338,37 @@ class AgregarDosis(CreateView):
     template_name='dosis/agregarDosis.html'
     success_url=reverse_lazy('ConsultarDosis')
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            persona = form.save()
+            return HttpResponseRedirect(self.success_url)
+        else:
+            messages.success(request, 'La dosis ingresada ya esta registrada')
+            return self.render_to_response(self.get_context_data(form=form))
+
 class EliminarDosis(DeleteView):
     model=Dosis
+    second_model = Registro
     template_name='dosis/eliminarDosis.html'
     success_url=reverse_lazy('ConsultarDosis')
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
         pk = kwargs['pk']
-        form = self.model.objects.get(dui=pk)
-        if(form.isValid()):
-            return HttpResponseRedirect(self.success_url)
-        else:
-            messages.warning(request, 'No se ha podido eliminar la dosis, se encuentran registros asociados a la misma')
-            form.delete()
-            return HttpResponseRedirect(self.success_url)
+        dosis = self.model.objects.get(numero_dosis=pk)
+        try:
+            registro = self.second_model.objects.filter(numero_dosis = dosis.numero_dosis)
+            if registro: 
+                messages.warning(request, 'No se puede eliminar esta dosis, existen registros asociados a ella')
+                return redirect('EliminarDosis', pk)
+            else:
+                dosis.delete()
+                return HttpResponseRedirect(self.success_url)
+        except self.second_model.DoesNotExist:
+                dosis.delete()
+                return HttpResponseRedirect(self.success_url)
 
 class EliminarRegistro(DeleteView):
     model = Registro
