@@ -5,12 +5,53 @@
 {% endblock %}
 
 {% block content %} 
-<form method="post">
-    {% csrf_token %}
-    <h3>¿Desea eliminar la persona {{object.dui}} y todos sus registros del sistema?</h3
-    <button class = "btn btn-danger" type="submit">Si, eliminar </button>
-    <a class= "btn btn-primary" href="{% url 'ConsultarPersona' %}">Cancelar </a>
-</form>
+<div class="content">
+    <h1 class="logo"><b>ELIMINAR PERSONA</b></h1><br><br>
+    <div class="contact-wrapper">
+        <div class="contact-form">
+            <form method="post">
+                {% csrf_token %}
+                <h3>¿Desea eliminar esta persona y todos sus registros de vacunación del sistema?</h3>
+                <div>
+                    <h3>Dui: {{object.dui}}</h3>
+                </div>
+                <div>
+                    <h3>Nombre: {{object.nombre}}</h3>
+                </div>
+                <div>
+                    <h3>Apellido: {{object.apellido}}</h3>
+                </div>
+                <div>
+                    <h3>Sexo: {{object.sexo}}</h3>
+                </div>
+                <div>
+                    <h3>Edad: {{object.edad}}</h3>
+                </div>
+                <div>
+                    <h3>Municipio: {{object.id_municipio.nombre_municipio}}</h3>
+                </div>
+                <div>
+                    <h3>Departamento: {{object.id_municipio.id_departamento.nombre_departamento}}</h3>
+                </div>
+                {% if messages %}
+                <div>
+                    <ul class="messages">
+                        <div class="alert alert-danger">
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    </ul>  
+                </div>  
+                {% endif %}
+                <div class="block">
+                    <button class = "btn btn-primary" type="submit">Eliminar</button> 
+                    <button type="button"><a href="{% url 'ConsultarPersona' %}" >Cancelar</a></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock content %}
 
 {% block scripts %}
