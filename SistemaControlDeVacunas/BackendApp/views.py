@@ -1,7 +1,4 @@
 
-from django.contrib.auth.decorators import login_required
-
-#from django.contrib import messages
 from .models import Departamento, Dosis, Registro, Persona, Municipio, TipoVacuna
 
 from django.views.generic.base import TemplateView
@@ -200,7 +197,7 @@ class AgregarRegistro(CreateView):
                             messages.warning(request, 'No puede registrar esta dosis si aun no ha registrado la anterior')
                             return redirect('AgregarRegistro', pk)
                 except:
-                    messages.warning(request, 'No existe dosis 1 registrada con este dui')
+                    messages.warning(request, 'No existe dosis 1 registrada con este dui, ingrese la dosi 1 antes por favor')
                     return redirect('AgregarRegistro',pk)
         else:
             return redirect('AgregarRegistro',pk)
@@ -302,16 +299,7 @@ class EliminarDosis(DeleteView):
     template_name='dosis/eliminarDosis.html'
     success_url=reverse_lazy('ConsultarDosis')
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object
-        pk = kwargs['pk']
-        form = self.model.objects.get(dui=pk)
-        if(form.isValid()):
-            return HttpResponseRedirect(self.success_url)
-        else:
-            messages.warning(request, 'No se ha podido eliminar la dosis, se encuentran registros asociados a la misma')
-            form.delete()
-            return HttpResponseRedirect(self.success_url)
+    
 
 class EliminarRegistro(DeleteView):
     model = Registro

@@ -24,7 +24,7 @@
 
 {% block content %} 
 <div class="contenido">
-    <h1 class="logo"><b>CONSULTAR LISTADO DE VACUNAS</b></h1><br><br>
+    <h1 class="logo"><b>CONSULTAR LISTADO DE DOSIS</b></h1><br><br>
 
     <!--CONSULTAS TABLA-->
    <div id="mostrar_tabla">
@@ -47,7 +47,7 @@
             </tr>
             {% endfor %}
             {% else %}
-            <div class="alert alert-warning"><strong>No hay listados de dosis ingresadas en el sistema</strong></div>
+            <div class="alert alert-warning"><strong><i class="fas fa-exclamation-triangle"></i> No hay listados de dosis ingresadas en el sistema</strong></div>
             {% endif %}
         </tbody>
     </table>
