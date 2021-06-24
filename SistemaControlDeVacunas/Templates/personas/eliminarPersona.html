@@ -11,28 +11,28 @@
         <div class="contact-form">
             <form method="post">
                 {% csrf_token %}
-                <h2>¿Desea eliminar esta persona y todos sus registros de vacunación del sistema?</h2>
-                <div>
-                    <h3>Dui: {{object.dui}}</h3>
-                </div>
-                <div>
-                    <h3>Nombre: {{object.nombre}}</h3>
-                </div>
-                <div>
-                    <h3>Apellido: {{object.apellido}}</h3>
-                </div>
-                <div>
-                    <h3>Sexo: {{object.sexo}}</h3>
-                </div>
-                <div>
-                    <h3>Edad: {{object.edad}}</h3>
-                </div>
-                <div>
-                    <h3>Municipio: {{object.id_municipio.nombre_municipio}}</h3>
-                </div>
-                <div>
-                    <h3>Departamento: {{object.id_municipio.id_departamento.nombre_departamento}}</h3>
-                </div>
+                <h3>¿Desea eliminar esta persona y todos sus registros de vacunación del sistema?</h3>
+                <p>
+                        Dui: {{object.dui}}
+                </p>
+                <p>
+                        Nombre: {{object.nombre}}
+                </p>
+                <p>
+                        Apellido: {{object.apellido}}
+                </p>
+                <p>
+                        Sexo: {{object.sexo}}
+                </p>
+                <p>
+                        Edad: {{object.edad}}
+                </p>
+                <p>
+                        Municipio: {{object.id_municipio.nombre_municipio}}
+                </p>
+                <p>
+                        Departamento: {{object.id_municipio.id_departamento.nombre_departamento}}
+                </p>
                 {% if messages %}
                 <div>
                     <ul class="messages">
