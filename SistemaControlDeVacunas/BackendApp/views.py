@@ -250,7 +250,7 @@ class ModificarRegistro(UpdateView):
                 form.save()
                 return HttpResponseRedirect(self.success_url)
             else:
-                registro2 = self.model.objects.get(numero_dosis = 1)
+                registro2 = self.model.objects.get(numero_dosis = 1,dui = form.cleaned_data['dui'])
                 if form.cleaned_data['nombre_vacuna'] == registro2.nombre_vacuna:
                     if form.cleaned_data['fecha_vacunacion'] > registro2.fecha_vacunacion:
                         form.save()

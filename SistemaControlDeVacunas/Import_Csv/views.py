@@ -1,21 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import CsvModelForm
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import TemplateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from .models import Csv
-from BackendApp.models import Persona, Registro, Municipio, TipoVacuna, Departamento, Dosis
+from BackendApp.models import Persona, Registro, Municipio, TipoVacuna, Dosis
 import csv
+from django.contrib import messages
 
 
-#from django.http import HttpResponse
+# from django.http import HttpResponse
 # Create your views here.
 
 
 class DatosPersona(TemplateView):
     form_class = CsvModelForm
     template_name = 'csvs/csv.html'
-    success_url = reverse_lazy('Home')
 
     def get(self, request):
         form = self.form_class()
@@ -41,7 +41,6 @@ class DatosPersona(TemplateView):
                     vacuna = row[6]
                     dosis = row[7]
                     fecha = row[8]
-
                     try:
                         Persona.objects.create(
                             dui=dui,
@@ -53,38 +52,43 @@ class DatosPersona(TemplateView):
                             edad=int(edad)
                         )
                     except:
-                        #print('La Persona con el dui: '+str(dui)+', ya existe en la tabla de Personas')
+                        # print('La Persona con el dui: '+str(dui)+', ya existe en la tabla de Personas')
                         per += 1
-                    ban = False
+                        ban = False
                     try:
                         Registro.objects.filter(dui=dui)[0]
+
                     except:
                         ban = True
 
                     if ban:
                         Registro.objects.create(
-                                dui=Persona.objects.get(dui=dui),
-                                nombre_vacuna=TipoVacuna.objects.get(
-                                    nombre_vacuna=vacuna),
-                                numero_dosis=Dosis.objects.get(numero_dosis=dosis),
-                                fecha_vacunacion=fecha
-                            )
+                            dui=Persona.objects.get(dui=dui),
+                            nombre_vacuna=TipoVacuna.objects.get(
+                                nombre_vacuna=vacuna),
+                            numero_dosis=Dosis.objects.get(numero_dosis=dosis),
+                            fecha_vacunacion=fecha
+                        )
                         pass
                     else:
                         if dui == str(Registro.objects.filter(dui=dui)[0]):
-                            print('La Persona con el dui: '+str(dui) +
-                                ', ya existe en la tabla de Registros')
+                            messages.warning(request, 'La Persona con el dui: '+str(dui) +
+                                             ', ya existe en la tabla de Registros\n')
+                            regis +=1
                         else:
                             Registro.objects.create(
                                 dui=Persona.objects.get(dui=dui),
                                 nombre_vacuna=TipoVacuna.objects.get(
                                     nombre_vacuna=vacuna),
-                                numero_dosis=Dosis.objects.get(numero_dosis=dosis),
+                                numero_dosis=Dosis.objects.get(
+                                    numero_dosis=dosis),
                                 fecha_vacunacion=fecha
                             )
-                obj.activated = True
-                obj.save()
-        return HttpResponseRedirect(self.success_url)
+            obj.activated = True
+            obj.save()
+            if per != 0 or regis !=0: 
+                messages.success(request,'Datos ingresados con exito')
+            return render(request, self.template_name, {'form': form})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
