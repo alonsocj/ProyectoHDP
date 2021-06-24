@@ -302,6 +302,17 @@ class EliminarDosis(DeleteView):
     template_name='dosis/eliminarDosis.html'
     success_url=reverse_lazy('ConsultarDosis')
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        pk = kwargs['pk']
+        form = self.model.objects.get(dui=pk)
+        if(form.isValid()):
+            return HttpResponseRedirect(self.success_url)
+        else:
+            messages.warning(request, 'No se ha podido eliminar la dosis, se encuentran registros asociados a la misma')
+            form.delete()
+            return HttpResponseRedirect(self.success_url)
+
 class EliminarRegistro(DeleteView):
     model = Registro
     template_name = 'registro/eliminarRegistro.html'
