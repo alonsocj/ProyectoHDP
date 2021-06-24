@@ -6,7 +6,7 @@ from BackendApp.views import HomePage
 app_name = 'csvs'
 
 urlpatterns=[
-    path('', HomePage.as_view(), name='home-page'),
+    path('', HomePage.as_view(), name='Home'),
     path('csv/',DatosPersona.as_view(), name='upload-view'),
 
 ]

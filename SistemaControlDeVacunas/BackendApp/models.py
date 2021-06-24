@@ -70,6 +70,9 @@ class Registro(models.Model):
     class Meta:
         managed = False
         db_table = 'registro'
+        
+    def __str__(self):
+        return '{}'.format(self.dui)
 
 
 class TipoVacuna(models.Model):
