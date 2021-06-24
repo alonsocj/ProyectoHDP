@@ -278,7 +278,7 @@ class AgregarVacuna(CreateView):
 class ModificarVacuna(UpdateView):
     model=TipoVacuna
     form_class=VacunaForm2
-    template_name='vacunas/ingresarVacuna.html'
+    template_name='vacunas/modificarVacuna.html'
     success_url=reverse_lazy('ConsultarVacuna')
 
 class EliminarVacuna(DeleteView):
