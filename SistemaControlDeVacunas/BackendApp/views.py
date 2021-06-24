@@ -35,22 +35,28 @@ class HomePage(TemplateView):
         return Registro.objects.filter(numero_dosis = 2).count()
 
     def cont_Mujeres(self):
-        person = Persona.objects.filter(sexo = 'F')
-        tot =0
-        for i in range(0,person.count()):
-            tot += Registro.objects.filter(dui = person[i]).count()
+        try:
+            person = Persona.objects.filter(sexo = 'F')
+            tot =0
+            for i in range(0,person.count()):
+                tot += Registro.objects.filter(dui = person[i]).count()
 
-        averange = (tot/Registro.objects.filter().count())*100
-        return averange
+            averange = (tot/Registro.objects.filter().count())*100
+            return averange
+        except :
+            return 0
     
     def cont_Hombres(self):
-        person = Persona.objects.filter(sexo = 'M')
-        tot =0
-        for i in range(0,person.count()):
-            tot += Registro.objects.filter(dui = person[i]).count()
+        try:
+            person = Persona.objects.filter(sexo = 'M')
+            tot =0
+            for i in range(0,person.count()):
+                tot += Registro.objects.filter(dui = person[i]).count()
 
-        averange = (tot/Registro.objects.filter().count())*100
-        return averange
+            averange = (tot/Registro.objects.filter().count())*100
+            return averange
+        except :
+            return 0
     
     def graf_vacunados(self):
         data = []
@@ -81,9 +87,6 @@ class HomePage(TemplateView):
         context['primer_dosis'] = self.cont_primerDosis()
         context['segunda_dosis'] = self.cont_segundaDosis()
         context['total_dosis'] = self.total_dosis()
-        
-        d=Persona.objects.filter(id_municipio=44)
-        print(str(Persona.objects.filter(id_municipio=1)))
         return context
       
 class RegistrarPersona(CreateView):
