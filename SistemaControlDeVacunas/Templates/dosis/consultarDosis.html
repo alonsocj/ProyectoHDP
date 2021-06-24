@@ -23,12 +23,10 @@
 {% endblock %}
 
 {% block content %} 
-<div class="container">
-    <h1><p>CONSULTAR LISTADO DE VACUNAS<br></p></h1>
-     <br><br>
-  </div>
-  
-   <!--CONSULTAS TABLA-->
+<div class="contenido">
+    <h1 class="logo"><b>CONSULTAR LISTADO DE VACUNAS</b></h1><br><br>
+
+    <!--CONSULTAS TABLA-->
    <div id="mostrar_tabla">
     <table id="data" class="table table-striped table-bordered dt-responsive nowrap" style="margin: 0 auto; width:50%">
         <thead>
@@ -43,7 +41,7 @@
             <tr>
                 <td>{{dosis.numero_dosis}}</td>
                 <td>
-                    <a href="{% url 'EliminarDosis' dosis.numero_dosis %}" class="btn btn-danger" ><i class="fas fa-trash-alt"><b>Eliminar</b></i>
+                    <a href="{% url 'EliminarDosis' dosis.numero_dosis %}" class="btn btn-danger" ><b><i class="fas fa-trash-alt"></i></b>
                     </a>
                 </td>
             </tr>
@@ -54,7 +52,6 @@
         </tbody>
     </table>
   </div>
+</div>
 {% endblock content %}
 
-{% block scripts %}
-{% endblock %}
