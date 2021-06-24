@@ -54,7 +54,7 @@ body{
 }
 .contact-form form button, .contact-form form input, .contact-form form textarea{
     width: 100%;
-    padding: .7em;
+    padding: .1em;
     border: none;
     background: none;
     outline: none;
@@ -86,6 +86,11 @@ width: 30%;
     font-family:Arial, Helvetica, sans-serif;
 }
 
+.alert {
+    width: 90%; 
+    margin: 0 auto;
+    height: 20;
+}
 
 
 @media ( min-width:801px){

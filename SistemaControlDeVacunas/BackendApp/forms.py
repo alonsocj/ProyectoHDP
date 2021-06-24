@@ -125,20 +125,35 @@ class VacunaForm1(ModelForm):
             'pais_fabricacion':forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese el pais de fabricación de la vacuna','autocomplete':'off'})
         }
 
- #   def __init__(self, *args, **kwargs):
- #       super(VacunaForm1, self).__init__(*args, **kwargs)
- #       instance = getattr(self, 'instance', None)
- #       if instance and instance.nombre_vacuna:
- #           self.fields['nombre_vacuna'].required = False
- #           self.fields['nombre_vacuna'].widget.attrs['disabled'] = 'disabled'
+class VacunaForm2(ModelForm):
+    class Meta:
+        model=TipoVacuna
+        fields='__all__'
+        labels={
+            'nombre_vacuna': 'Nombre de vacuna',
+            'fabricante': 'Fabricante',
+            'pais_fabricacion':'Pais de Fabricación',
+        }
+        widgets={
+            'nombre_vacuna':forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese el nombre de la vacuna','autocomplete':'off'}),
+            'fabricante':forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese el fabricante de la vacuna','autocomplete':'off'}),
+            'pais_fabricacion':forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese el pais de fabricación de la vacuna','autocomplete':'off'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(VacunaForm2, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.nombre_vacuna:
+            self.fields['nombre_vacuna'].required = False
+            self.fields['nombre_vacuna'].widget.attrs['disabled'] = 'disabled'
     
- #   def clean_dui(self):
+    def clean_nombre_vacuna(self):
         # As shown in the above answer.
- #       instance = getattr(self, 'instance', None)
- #       if instance:
- #           return instance.nombre_vacuna
- #       else:
- #           return self.cleaned_data.get('nombre_vacuna', None)
+        instance = getattr(self, 'instance', None)
+        if instance:
+            return instance.nombre_vacuna
+        else:
+            return self.cleaned_data.get('nombre_vacuna', None)
 
 class DosisForm1(ModelForm):
     class Meta:
@@ -157,13 +172,13 @@ class RegistroForm2(ModelForm):
         labels = {
             'dui' : 'Dui',
             'numero_dosis' : 'Dosis',
-            'id_vacuna': 'Vacuna',
+            'nombre_vacuna': 'Vacuna',
             'fecha_vacunacion' : 'Fecha de Vacunacion',
         }
         widgets = { 'dui': forms.Select(attrs={ 'class': 'form-control'}),
                     'numero_dosis': forms.Select(attrs={ 'class': 'form-control'}),
                     'fecha_vacunacion': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-                    'id_vacuna': forms.Select(attrs={ 'class': 'form-control','required': True}), 
+                    'nombre_vacuna': forms.Select(attrs={ 'class': 'form-control','required': True}), 
         }
 
     def __init__(self, *args, **kwargs):
@@ -200,6 +215,6 @@ class PersonaForm3(ModelForm):
         labels = {
             'dui' : 'Dui',
         }
-        widgets = { 'dui': forms.TextInput(attrs={ 'class': 'form-control', 'autocomplete' : 'off', 'data-mask':"00000000-0"}),
+        widgets = { 'dui': forms.TextInput(attrs={'minlength':'10', 'class': 'form-control', 'placeholder' : 'Ingrese su dui', 'autocomplete' : 'off', 'data-mask':"00000000-0"}),
         }
 

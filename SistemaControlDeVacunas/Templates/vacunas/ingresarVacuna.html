@@ -27,9 +27,11 @@
                     <label for="{{form.pais_fabricacion.name}}">{{form.pais_fabricacion.label}}</label>
                     {{form.pais_fabricacion}}
                 </p>
+                <p>
                 {% if form.errors %}
-                 <div class="alert alert-danger"><p>El tipo de vacuna ingresada ya existe, intente nuevamente</p></div>
+                 <div class="alert alert-danger">El tipo de vacuna ingresada ya existe, intente nuevamente</div>
                  {% endif %}
+                 </p>
                 <div class="block">
                     <button type="submit">Agregar</button>  <button href="http://127.0.0.1:8000/consultarVacuna/">Cancelar</button>
                 </div >

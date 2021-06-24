@@ -5,21 +5,48 @@
 {% endblock %}
 
 {% block content %} 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }} 
-    {{ form2.as_p }} 
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>    
-    {% endif %}
-    <button class = "btn btn-primary" type="submit">Registrar</button>
-    <a class= "btn btn-primary" href="{% url 'ConsultarPersona' %}">Cancelar </a>
-    
-</form>
+<div class="content">
+    <h1 class="logo"><b>REGISTRO DE VACUNACION</b></h1><br><br>
+    <div class="contact-wrapper">
+        <div class="contact-form">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <p>
+                    <label for="{{form2.dui.name}}">{{form2.dui.label}}</label>
+                    {{form2.dui}}
+                </p>
+                <p>
+                    <label for="{{form.numero_dosis.name}}">{{form.numero_dosis.label}}</label>
+                    {{form.numero_dosis}}
+                </p>
+                <p>
+                    <label for="{{form2.nombre_vacuna.name}}">{{form.nombre_vacuna.label}}</label>
+                    {{form.nombre_vacuna}}
+                </p>
+                <p>
+                    <label for="{{form.fecha_vacunacion.name}}">{{form.fecha_vacunacion.label}}</label>
+                    {{form.fecha_vacunacion}}
+                </p>
+                {% if messages %}
+                <div>
+                    <ul class="messages">
+                        <div class="alert alert-danger">
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    </ul>  
+                </div>  
+                {% endif %}
+                <div class="block">
+                    <button class = "btn btn-primary" type="submit">Ingresar</button> 
+                    <button type="button"><a href="{% url 'ConsultarRegistro' %}">Cancelar</a></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 {% endblock content %}
 
