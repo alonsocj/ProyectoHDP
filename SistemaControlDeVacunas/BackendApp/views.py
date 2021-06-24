@@ -95,22 +95,6 @@ class RegistrarPersona(CreateView):
     form_class = PersonaForm
     success_url = reverse_lazy('ConsultarPersona')
 
-
-class ModificarPersonaTabla(ListView):
-    model = Persona
-    template_name = 'personas/modificar.html'
-
-    def post(self, request, *args, **kwargs):
-            self.object = self.get_object
-            form = self.form_class(request.POST)
-            if form.is_valid():
-                    persona = form.save()
-                    return HttpResponseRedirect(self.success_url)
-            else:
-                messages.warning(request, 'La persona con el dui ingresado ya esta registrada')
-                return self.render_to_response(self.get_context_data(form=form))
-
-
 class ModificarPersona(UpdateView):
     model = Persona
     template_name = 'personas/modificarPersona.html'
@@ -153,10 +137,12 @@ class ConsultarPersona(ListView):
 class AgregarRegistro(CreateView):
     model = Registro
     second_model = Persona
+    third_model = Dosis
     template_name = 'registro/agregarRegistro1.html'
     form_class = RegistroForm1
     second_form_class = PersonaForm2
     success_url = reverse_lazy('ConsultarRegistro')
+
 
     def get_context_data(self, **kwargs):
         context = super(AgregarRegistro, self).get_context_data(**kwargs)
@@ -195,15 +181,23 @@ class AgregarRegistro(CreateView):
                         messages.warning(request, 'Ya existe un registro creado con la dosis ingresada')
                         return redirect('AgregarRegistro',pk)
                     except:
-                        if registro.nombre_vacuna == registro1.nombre_vacuna:
-                            if registro.fecha_vacunacion > registro1.fecha_vacunacion:
-                                registro.save()
-                                return HttpResponseRedirect(self.success_url)
-                            else: 
-                                messages.warning(request, 'La fecha debe ser posterior a la de dosis 1')
+                        try:
+                            dosis = form.cleaned_data['numero_dosis']
+                            a = int(dosis.numero_dosis)-1
+                            dosis2 = self.third_model.objects.get(numero_dosis=a)
+                            registro4 = self.model.objects.get(dui=pk, numero_dosis=dosis2)
+                            if registro.nombre_vacuna == registro4.nombre_vacuna:
+                                if registro.fecha_vacunacion > registro4.fecha_vacunacion:
+                                    registro.save()
+                                    return HttpResponseRedirect(self.success_url)
+                                else: 
+                                    messages.warning(request, 'La fecha debe ser posterior a la fecha registrada en la dosis anterior')
+                                    return redirect('AgregarRegistro', pk)
+                            else:
+                                messages.warning(request, 'El tipo de vacuna ingresada no coincide con el registrado en la dosis anterior')
                                 return redirect('AgregarRegistro', pk)
-                        else:
-                            messages.warning(request, 'El tipo de vacuna ingresada no coincide con el de la primera dosis')
+                        except:
+                            messages.warning(request, 'No puede registrar esta dosis si aun no ha registrado la anterior')
                             return redirect('AgregarRegistro', pk)
                 except:
                     messages.warning(request, 'No existe dosis 1 registrada con este dui')

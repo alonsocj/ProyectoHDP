@@ -11,19 +11,19 @@
         <div class="contact-form">
             <form method="post">
                 {% csrf_token %}
-                <h2>¿Desea eliminar el registro del sistema?</h2>
-                <div>
-                    <h3>Dui: {{object.dui}}</h3>
-                </div>
-                <div>
-                    <h3>Dosis: {{object.numero_dosis}}</h3>
-                </div>
-                <div>
-                    <h3>Vacuna: {{object.nombre_vacuna}}</h3>
-                </div>
-                <div>
-                    <h3>Fecha de Vacunación: {{object.fecha_vacunacion}}</h3>
-                </div>
+                <h3>¿Desea eliminar el registro del sistema?</h3>
+                <p>
+                        Dui: {{object.dui}}
+                </p>
+                <p>
+                        Dosis: {{object.numero_dosis}}
+                </p>
+                <p>
+                        Vacuna: {{object.nombre_vacuna}}
+                </p>
+                <p>
+                        Fecha de Vacunación: {{object.fecha_vacunacion}}
+                </p>
                 {% if messages %}
                 <div>
                     <ul class="messages">
