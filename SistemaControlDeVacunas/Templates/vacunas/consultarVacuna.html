@@ -24,7 +24,9 @@
 {% block content %} 
 <div class="contenido">
     <h1 class="logo"><b>CONSULTAR TIPOS DE VACUNA</b></h1><br><br>
-
+    <div class="mainAgregar">
+        <a href="{% url 'AgregarVacuna' %}" class="btn btn-info"> <b><i class="fas fa-plus-square"></i>  Agregar tipo de vacuna</b></a>
+      </div>
           <!--CONSULTAS TABLA-->
    <div id="mostrar_tabla">
     <table id="data" class="table table-striped table-bordered dt-responsive nowrap" style="margin: 0 auto; width:50%">

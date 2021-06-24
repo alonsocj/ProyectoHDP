@@ -113,6 +113,30 @@ width: 30%;
     padding: 10em 5em;
 }
 
+.contenido .mainAgregar{
+    padding: 0em 0em 3em 0em;
+    margin-right: 0em;
+    width: 100%;
+   display:flex;
+}
+.contenido .mainAgregar .btn{
+    background-color: #1e3e7a;
+    border: #1e3e7a;
+    color: aliceblue;
+    justify-content: right;
+    display: flex;
+    text-decoration: none;
+
+}
+.contenido .mainAgregar .btn:hover{
+    
+    background-color: #00205c;
+    border: #00205c;
+    color: aliceblue;
+    transition: background-color 0.4s ease-out;
+
+}
+
 @media ( min-width:801px){
     body{
         padding: 0 0rem;
