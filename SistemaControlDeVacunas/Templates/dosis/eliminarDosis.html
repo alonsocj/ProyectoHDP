@@ -17,9 +17,17 @@
                         Número de dosis: {{object.numero_dosis}}
                     </p>
                     
-                    {% if form.errors %}
-                    <div class="alert alert-danger">No se ha podido eliminar la dosis, intente nuevamente</div>
-                    {% endif %}
+                    {% if messages %}
+                <div>
+                    <ul class="messages">
+                        <div class="alert alert-danger">
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    </ul>  
+                </div>  
+                {% endif %}
                     </p>
                     <div class="block">
                         <button type="submit">Eliminar</button>  <button type="button"><a href="http://127.0.0.1:8000/consultardosis/">Cancelar</a></button>
