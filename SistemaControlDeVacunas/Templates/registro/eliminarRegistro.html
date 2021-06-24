@@ -4,20 +4,45 @@
 
 {% endblock %}
 
-{% block content %} 
-<form method="post">
-    {% csrf_token %}
-    <h3>¿Desea eliminar el registro de {{object.dui}} del sistema?</h3>
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>    
-    {% endif %}
-    <button class = "btn btn-danger" type="submit">Si, eliminar </button>
-    <a class= "btn btn-primary" href="{% url 'ConsultarRegistro' %}">Cancelar </a>
-</form>
+{% block content %}
+<div class="content">
+    <h1 class="logo"><b> REGISTRO DE VACUNACIONES</b></h1><br><br>
+    <div class="contact-wrapper">
+        <div class="contact-form">
+            <form method="post">
+                {% csrf_token %}
+                <h2>¿Desea eliminar el registro del sistema?</h2>
+                <div>
+                    <h3>Dui: {{object.dui}}</h3>
+                </div>
+                <div>
+                    <h3>Dosis: {{object.numero_dosis}}</h3>
+                </div>
+                <div>
+                    <h3>Vacuna: {{object.nombre_vacuna}}</h3>
+                </div>
+                <div>
+                    <h3>Fecha de Vacunación: {{object.fecha_vacunacion}}</h3>
+                </div>
+                {% if messages %}
+                <div>
+                    <ul class="messages">
+                        <div class="alert alert-danger">
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    </ul>  
+                </div>  
+                {% endif %}
+                <div class="block">
+                    <button class = "btn btn-primary" type="submit">Eliminar</button> 
+                    <button type="button"><a href="{% url 'ConsultarRegistro' %}">Cancelar</a></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock content %}
 
 {% block scripts %}

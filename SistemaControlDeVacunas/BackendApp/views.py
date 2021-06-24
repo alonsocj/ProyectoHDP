@@ -10,7 +10,7 @@ from django.views.generic.detail import DetailView
 from django.http import HttpResponseRedirect, request
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from .forms import PersonaForm, PersonaForm1, RegistroForm1, PersonaForm2, PersonaForm3, RegistroForm2,VacunaForm1,DosisForm1
+from .forms import PersonaForm, PersonaForm1, RegistroForm1, PersonaForm2, PersonaForm3, RegistroForm2,VacunaForm1,VacunaForm2,DosisForm1
 from django.contrib import messages
 
 # Create your views here.
@@ -280,19 +280,9 @@ class AgregarVacuna(CreateView):
 
 class ModificarVacuna(UpdateView):
     model=TipoVacuna
-    form_class=VacunaForm1
+    form_class=VacunaForm2
     template_name='vacunas/ingresarVacuna.html'
     success_url=reverse_lazy('ConsultarVacuna')
-
-   # def post(self,request,*args,**kwargs):
-   #     self.object=self.get_object
-    #    form=self.form_class(request.POST)
-     #   if form.is_valid():
-      #      form=form.save()
-       #     return HttpResponseRedirect(self.success_url)
-       # else:
-            # return redirect('ModificarVacuna',id_re)
-         #  return self.render_to_response(self.get_context_data(form=form))
 
 class EliminarVacuna(DeleteView):
     model=TipoVacuna
