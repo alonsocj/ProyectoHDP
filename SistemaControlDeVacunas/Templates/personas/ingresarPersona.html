@@ -25,6 +25,7 @@
                 <p>
                     <label for="{{form.apellido.name}}">{{form.apellido.label}}</label>
                     {{form.apellido}}
+
                 </p>
                 <p>
                     <label for="{{form.edad.name}}">{{form.edad.label}}</label>
@@ -51,6 +52,7 @@
                         <option value="{{mun.id_municipio}}" data-chained="{{mun.id_departamento.id_departamento}}">{{mun.nombre_municipio}}</option>
                         {% endfor %}
                     </select>
+
                 </p>
                 
                 {% if messages %}
@@ -58,7 +60,7 @@
                     <ul class="messages">
                         <div class="alert alert-danger">
                             {% for message in messages %}
-                                {{ message }}
+                            <i class="fas fa-exclamation">  {{ message }}</i>
                             {% endfor %}
                         </div>
                     </ul>  

@@ -3,6 +3,21 @@
   {% csrf_token %} {{form}}
   <button type="submit" class="btn btn-dark">Confirmar</button>
 </form>
-{% if form.isValid %}
-<p>subido exitosamente</p>
-{% endif %} {% endblock content %} {% block scripts %} {% endblock %}
+
+
+{% if messages %}
+                <div>
+                    <ul class="messages">
+                        <div class="alert alert-info">
+                            {% for message in messages %}
+                            <div>
+                                {{ message }}
+                              </div>
+                        <br>
+                            {% endfor %}
+                        </div>
+                    </ul>  
+                </div>  
+{% endif %} 
+
+{% endblock content %} {% block scripts %} {% endblock %}
