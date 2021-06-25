@@ -29,15 +29,22 @@ class HomePage(TemplateView):
         data = []
         for i in range(1,Municipio.objects.all().count()+1):
             person = Persona.objects.filter(id_municipio=i)
+            
+            prim =0
+            segund = 0
+            
             for p in range(0, person.count()):
-                diccionario = {
-                        'mun': str(Municipio.objects.filter(id_municipio = i)[0]),
-                        'primDosis':Registro.objects.filter(dui = person[p],numero_dosis =1).count(),
-                        'segDosis':Registro.objects.filter(dui = person[p],numero_dosis =2).count()
+                prim += Registro.objects.filter(dui = person[p],numero_dosis =1).count()
+                segund += Registro.objects.filter(dui = person[p],numero_dosis =2).count()
+
+            diccionario = {
+                'mun': str(Municipio.objects.filter(id_municipio = i)[0]),
+                'primDosis':prim,
+                'segDosis':segund
                         }
-                tojson =  json.dumps(diccionario)
-                strjson = json.loads(tojson)
-                data.append(strjson)
+            tojson =  json.dumps(diccionario)
+            strjson = json.loads(tojson)
+            data.append(strjson)
         return data
 
     def total_dosis(self):
