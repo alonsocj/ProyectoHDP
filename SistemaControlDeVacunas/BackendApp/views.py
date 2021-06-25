@@ -20,22 +20,7 @@ def login(request):
 
 def logout(request):
     return render(request,'login.html')
-""""   
-class MunTab(ListView):
-    model = Municipio
-    template_name= 'graficos/infoMunicipio'
 
-    def mun(self):
-        
-        return self.model.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['municipio'] = self.mun()
-
-        
-        return context
-"""
 class HomePage(TemplateView):
     object_list = Municipio
     template_name = "inicio.html"
@@ -118,9 +103,6 @@ class HomePage(TemplateView):
         context['segunda_dosis'] = self.cont_segundaDosis()
         context['total_dosis'] = self.total_dosis()
         context['municipio1'] = self.dosisMunicipio()
-        print(self.dosisMunicipio())
-
-        context['mun'] = Municipio.objects.filter()
         return context
       
 class RegistrarPersona(CreateView):

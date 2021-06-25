@@ -46,7 +46,6 @@
 <script src={% static 'lib/highcharts/modules/drilldown.js' %}></script>
 <script>
     var municipio = {{municipio1|safe}};
-    console.log(municipio);
     buildTable(municipio);
     function buildTable(data){
         var table = document.getElementById("tableMun");
