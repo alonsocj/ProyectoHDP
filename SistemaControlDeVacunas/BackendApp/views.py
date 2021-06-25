@@ -129,22 +129,33 @@ class RegistrarPersona(CreateView):
     form_class = PersonaForm
     success_url = reverse_lazy('ConsultarPersona')
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            persona = form.save()
-            return HttpResponseRedirect(self.success_url)
-        else:
-            messages.success(request, 'Ya existe una persona registrada con este dui')
-            return self.render_to_response(self.get_context_data(form=form))
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['departamentos'] = Departamento.objects.all()
+        context['municipios'] = Municipio.objects.all()
+        return context
 
+    def post(self, request, *args, **kwargs):
+            self.object = self.get_object
+            form = self.form_class(request.POST)
+            if form.is_valid():
+                persona = form.save()
+                return HttpResponseRedirect(self.success_url)
+            else:
+                messages.warning(request, 'Ya existe una persona registrada con este dui')
+                return self.render_to_response(self.get_context_data(form=form)) 
 
 class ModificarPersona(UpdateView):
     model = Persona
     template_name = 'personas/modificarPersona.html'
     form_class = PersonaForm1
     success_url = reverse_lazy('ConsultarPersona')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['departamentos'] = Departamento.objects.all()
+        context['municipios'] = Municipio.objects.all()
+        return context
 
 class EliminarPersona(DeleteView):
     model = Persona
@@ -408,6 +419,7 @@ class EliminarDosis(DeleteView):
 
 class EliminarRegistro(DeleteView):
     model = Registro
+    second_model = Dosis
     template_name = 'registro/eliminarRegistro.html'
     form_class = RegistroForm1
     success_url = reverse_lazy('ConsultarRegistro')
@@ -419,12 +431,23 @@ class EliminarRegistro(DeleteView):
         if(registro.numero_dosis.numero_dosis == 1):
             try:
                 registro1 = self.model.objects.get(dui=registro.dui, numero_dosis=2)
-                messages.warning(request, 'Para eliminar el registro debe eliminar antes los registros de las otras dosis')
+                messages.warning(request, 'Para eliminar el registro debe eliminar antes los registros de las otras dosis posteriores')
                 return redirect('EliminarRegistro', id_re)
             except self.model.DoesNotExist:
                 registro.delete()
                 return HttpResponseRedirect(self.success_url)
         else:
-            registro.delete()
-            return HttpResponseRedirect(self.success_url)
+            try:
+                a = int(registro.numero_dosis.numero_dosis) + 1
+                dosis = self.second_model.objects.get(numero_dosis = a)
+                registro2 = self.model.objects.get(dui=registro.dui, numero_dosis=dosis)
+                if registro2:
+                    messages.warning(request, 'Para eliminar el registro debe eliminar antes los registros de las otras dosis posteriores')
+                    return redirect('EliminarRegistro', id_re)
+                else:
+                    registro.delete()
+                    return HttpResponseRedirect(self.success_url)
+            except:
+                registro.delete()
+                return HttpResponseRedirect(self.success_url)
 
