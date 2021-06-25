@@ -1,6 +1,6 @@
 
 from django.contrib.auth.decorators import login_required
-
+import json
 #from django.contrib import messages
 from .models import Departamento, Dosis, Registro, Persona, Municipio, TipoVacuna
 
@@ -19,11 +19,40 @@ def login(request):
 
 def logout(request):
     return render(request,'login.html')
-    
+""""   
+class MunTab(ListView):
+    model = Municipio
+    template_name= 'graficos/infoMunicipio'
 
+    def mun(self):
+        
+        return self.model.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['municipio'] = self.mun()
+
+        
+        return context
+"""
 class HomePage(TemplateView):
-    model = Registro
+    object_list = Municipio
     template_name = "inicio.html"
+
+    def dosisMunicipio(self):
+        data = []
+        for i in range(1,Municipio.objects.all().count()+1):
+            person = Persona.objects.filter(id_municipio=i)
+            for p in range(0, person.count()):
+                diccionario = {
+                        'mun': str(Municipio.objects.filter(id_municipio = i)[0]),
+                        'primDosis':Registro.objects.filter(dui = person[p],numero_dosis =1).count(),
+                        'segDosis':Registro.objects.filter(dui = person[p],numero_dosis =2).count()
+                        }
+                tojson =  json.dumps(diccionario)
+                strjson = json.loads(tojson)
+                data.append(strjson)
+        return data
 
     def total_dosis(self):
         return self.cont_primerDosis() + self.cont_segundaDosis()
@@ -87,6 +116,10 @@ class HomePage(TemplateView):
         context['primer_dosis'] = self.cont_primerDosis()
         context['segunda_dosis'] = self.cont_segundaDosis()
         context['total_dosis'] = self.total_dosis()
+        context['municipio1'] = self.dosisMunicipio()
+        print(self.dosisMunicipio())
+
+        context['mun'] = Municipio.objects.filter()
         return context
       
 class RegistrarPersona(CreateView):
