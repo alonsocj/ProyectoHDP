@@ -103,7 +103,7 @@ class RegistroForm1(ModelForm):
             'nombre_vacuna': 'Vacuna',
             'fecha_vacunacion' : 'Fecha de Vacunacion',
         }
-        widgets = {'fecha_vacunacion': forms.DateInput(attrs={'type': 'date', 'class': 'form-control','required': True}),
+        widgets = {'fecha_vacunacion': forms.DateInput(attrs={'type': 'date', 'class': 'form-control','required': True, 'min': '2021-02-17'}),
                     'nombre_vacuna': forms.Select(attrs={ 'class': 'form-control','required': True}),
                     'numero_dosis': forms.Select(attrs={ 'class': 'form-control','required': True}),
         }
@@ -176,7 +176,7 @@ class RegistroForm2(ModelForm):
         }
         widgets = { 'dui': forms.Select(attrs={ 'class': 'form-control'}),
                     'numero_dosis': forms.Select(attrs={ 'class': 'form-control'}),
-                    'fecha_vacunacion': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+                    'fecha_vacunacion': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'required': True,'min': '2021-02-17'}),
                     'nombre_vacuna': forms.Select(attrs={ 'class': 'form-control','required': True}), 
         }
 
