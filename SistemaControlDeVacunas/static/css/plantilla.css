@@ -85,7 +85,9 @@ width: 30%;
     
     color: black;
 }
-
+.content .contact-wrapper .contact-form .most #data th,td{
+    font-size:11px;
+}
 
 .log a{
     color: aliceblue;
