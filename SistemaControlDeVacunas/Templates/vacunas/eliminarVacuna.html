@@ -21,6 +21,18 @@
                 <p>
                     Pais de fabricación: {{object.pais_fabricacion}}
                 </p>
+                {% if messages %}
+                <div>
+                    <ul class="messages">
+                        <div class="alert alert-danger">
+                            {% for message in messages %}
+
+                            <i class="fas fa-exclamation">  {{ message }}</i>
+                            {% endfor %}
+                        </div>
+                    </ul>  
+                </div>  
+                {% endif %}
                 <div class="block">
                     <button type="submit">Eliminar</button> <button type="button"><a href="{% url 'ConsultarVacuna' %}">Cancelar</a></button>
                 </div >

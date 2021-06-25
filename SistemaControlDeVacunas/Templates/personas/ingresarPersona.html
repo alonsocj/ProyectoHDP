@@ -19,21 +19,23 @@
                     {{form.dui}}
                 </p>
                 <p>
-                    <label for="{{form.edad.name}}">{{form.edad.label}}</label>
-                    {{form.edad}}
-                </p>
-                <p>
                     <label for="{{form.nombre.name}}">{{form.nombre.label}}</label>
                     {{form.nombre}}
-                </p>
-                <p>
-                    <label for="{{form.sexo.name}}">{{form.sexo.label}}</label>
-                    {{form.sexo}}
                 </p>
                 <p>
                     <label for="{{form.apellido.name}}">{{form.apellido.label}}</label>
                     {{form.apellido}}
                 </p>
+                <p>
+                    <label for="{{form.edad.name}}">{{form.edad.label}}</label>
+                    {{form.edad}}
+                </p>
+
+                <p>
+                    <label for="{{form.sexo.name}}">{{form.sexo.label}}</label>
+                    {{form.sexo}}
+                </p>
+
                 <p>
                     <label for="{{form.id_municipio.name}}">{{form.id_municipio.label}}</label>
                     {{form.id_municipio}}
@@ -44,7 +46,7 @@
                     <ul class="messages">
                         <div class="alert alert-danger">
                             {% for message in messages %}
-                                {{ message }}
+                            <i class="fas fa-exclamation">  {{ message }}</i>
                             {% endfor %}
                         </div>
                     </ul>  
