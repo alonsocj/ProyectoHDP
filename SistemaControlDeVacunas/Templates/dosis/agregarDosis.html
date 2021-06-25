@@ -15,16 +15,16 @@
                         {{form.numero_dosis}}
                     </p>
                     {% if messages %}
-                    <div>
-                        <ul class="messages">
-                            <div class="alert alert-danger">
-                                {% for message in messages %}
-                                    {{ message }}
-                                {% endfor %}
-                            </div>
-                        </ul>  
-                    </div> 
-                    {% endif %}
+                <div>
+                    <ul class="messages">
+                        <div class="alert alert-danger">
+                            {% for message in messages %}
+                            <i class="fas fa-exclamation">  {{ message }}</i>
+                            {% endfor %}
+                        </div>
+                    </ul>  
+                </div>  
+                {% endif %}
                     <div class="block">
                         <button type="submit">Agregar dosis</button>  <button type="button"><a href="http://127.0.0.1:8000/consultardosis/">Cancelar</a></button>
                     </div >
