@@ -30,6 +30,7 @@
 {% include 'graficos/porSexo.html' %}
 <br><br><br>
 {% include 'graficos/porDepartamento.html' %}
+{% include 'graficos/infoMunicipios.html' %}
 
 
 {% endblock%}
@@ -43,7 +44,25 @@
 <!--<script src={% static 'lib/highcharts/modules/series-label.js' %}></script>-->
 <script src={% static 'lib/highcharts/modules/data.js' %}></script>
 <script src={% static 'lib/highcharts/modules/drilldown.js' %}></script>
+<script>
+    var municipio = {{municipio1|safe}};
+    buildTable(municipio);
+    function buildTable(data){
+        var table = document.getElementById("tableMun");
 
+        for (var i = 0;i<data.length;i++){
+            var row=`<tr>
+                        <td>${data[i].mun}</td>
+                        <td>${data[i].primDosis}</td>
+                        <td>${data[i].segDosis}</td>
+                        <td>${data[i].primDosis + data[i].segDosis}</td>
+                    </tr>
+            `;
+            table.innerHTML += row;
+        }
+    };
+
+</script>
 <script type="application/javascript">
   Highcharts.chart('container', {
       chart: {

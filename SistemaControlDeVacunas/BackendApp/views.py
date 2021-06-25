@@ -1,4 +1,8 @@
 
+from django.contrib.auth.decorators import login_required
+import json
+#from django.contrib import messages
+
 from .models import Departamento, Dosis, Registro, Persona, Municipio, TipoVacuna
 
 from django.views.generic.base import TemplateView
@@ -16,11 +20,25 @@ def login(request):
 
 def logout(request):
     return render(request,'login.html')
-    
 
 class HomePage(TemplateView):
-    model = Registro
+    object_list = Municipio
     template_name = "inicio.html"
+
+    def dosisMunicipio(self):
+        data = []
+        for i in range(1,Municipio.objects.all().count()+1):
+            person = Persona.objects.filter(id_municipio=i)
+            for p in range(0, person.count()):
+                diccionario = {
+                        'mun': str(Municipio.objects.filter(id_municipio = i)[0]),
+                        'primDosis':Registro.objects.filter(dui = person[p],numero_dosis =1).count(),
+                        'segDosis':Registro.objects.filter(dui = person[p],numero_dosis =2).count()
+                        }
+                tojson =  json.dumps(diccionario)
+                strjson = json.loads(tojson)
+                data.append(strjson)
+        return data
 
     def total_dosis(self):
         return self.cont_primerDosis() + self.cont_segundaDosis()
@@ -84,6 +102,7 @@ class HomePage(TemplateView):
         context['primer_dosis'] = self.cont_primerDosis()
         context['segunda_dosis'] = self.cont_segundaDosis()
         context['total_dosis'] = self.total_dosis()
+        context['municipio1'] = self.dosisMunicipio()
         return context
       
 class RegistrarPersona(CreateView):
@@ -92,22 +111,33 @@ class RegistrarPersona(CreateView):
     form_class = PersonaForm
     success_url = reverse_lazy('ConsultarPersona')
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            persona = form.save()
-            return HttpResponseRedirect(self.success_url)
-        else:
-            messages.success(request, 'Ya existe una persona registrada con este dui')
-            return self.render_to_response(self.get_context_data(form=form))
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['departamentos'] = Departamento.objects.all()
+        context['municipios'] = Municipio.objects.all()
+        return context
 
+    def post(self, request, *args, **kwargs):
+            self.object = self.get_object
+            form = self.form_class(request.POST)
+            if form.is_valid():
+                persona = form.save()
+                return HttpResponseRedirect(self.success_url)
+            else:
+                messages.warning(request, 'Ya existe una persona registrada con este dui')
+                return self.render_to_response(self.get_context_data(form=form)) 
 
 class ModificarPersona(UpdateView):
     model = Persona
     template_name = 'personas/modificarPersona.html'
     form_class = PersonaForm1
     success_url = reverse_lazy('ConsultarPersona')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['departamentos'] = Departamento.objects.all()
+        context['municipios'] = Municipio.objects.all()
+        return context
 
 class EliminarPersona(DeleteView):
     model = Persona
@@ -371,6 +401,7 @@ class EliminarDosis(DeleteView):
 
 class EliminarRegistro(DeleteView):
     model = Registro
+    second_model = Dosis
     template_name = 'registro/eliminarRegistro.html'
     form_class = RegistroForm1
     success_url = reverse_lazy('ConsultarRegistro')
@@ -382,12 +413,23 @@ class EliminarRegistro(DeleteView):
         if(registro.numero_dosis.numero_dosis == 1):
             try:
                 registro1 = self.model.objects.get(dui=registro.dui, numero_dosis=2)
-                messages.warning(request, 'Para eliminar el registro debe eliminar antes los registros de las otras dosis')
+                messages.warning(request, 'Para eliminar el registro debe eliminar antes los registros de las otras dosis posteriores')
                 return redirect('EliminarRegistro', id_re)
             except self.model.DoesNotExist:
                 registro.delete()
                 return HttpResponseRedirect(self.success_url)
         else:
-            registro.delete()
-            return HttpResponseRedirect(self.success_url)
+            try:
+                a = int(registro.numero_dosis.numero_dosis) + 1
+                dosis = self.second_model.objects.get(numero_dosis = a)
+                registro2 = self.model.objects.get(dui=registro.dui, numero_dosis=dosis)
+                if registro2:
+                    messages.warning(request, 'Para eliminar el registro debe eliminar antes los registros de las otras dosis posteriores')
+                    return redirect('EliminarRegistro', id_re)
+                else:
+                    registro.delete()
+                    return HttpResponseRedirect(self.success_url)
+            except:
+                registro.delete()
+                return HttpResponseRedirect(self.success_url)
 

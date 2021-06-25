@@ -22,7 +22,7 @@ class PersonaForm(ModelForm):
                 ('M', 'M'),
                 )
         widgets = { 'dui': forms.TextInput( attrs={'minlength':'10', 'class': 'form-control', 'placeholder' : 'Ingrese su dui', 'autocomplete' : 'off', 'data-mask':"00000000-0"}),
-                    'id_municipio': forms.Select(attrs={ 'class': 'form-control','required': True}),
+                    #'id_municipio': forms.Select(attrs={ 'class': 'form-control','required': True}),
                     'nombre': forms.TextInput(attrs={ 'class': 'form-control', 'placeholder' : 'Ingrese su nombre', 'autocomplete' : 'off'}),
                     'apellido': forms.TextInput(attrs={ 'class': 'form-control','placeholder' : 'Ingrese su apellido', 'autocomplete' : 'off'}),
                     'edad': forms.NumberInput(attrs={'min': '18', 'max' : '100', 'class': 'form-control'}),
@@ -48,7 +48,6 @@ class PersonaForm1(ModelForm):
                 ('M', 'M'),
                 )
         widgets = { 'dui': forms.TextInput(attrs={ 'class': 'form-control', 'autocomplete' : 'off', 'data-mask':"00000000-0"}),
-                    'id_municipio': forms.Select(attrs={ 'class': 'form-control','required': True}),
                     'nombre': forms.TextInput(attrs={ 'class': 'form-control', 'placeholder' : 'Ingrese su nombre', 'autocomplete' : 'off'}),
                     'apellido': forms.TextInput(attrs={ 'class': 'form-control','placeholder' : 'Ingrese su apellido', 'autocomplete' : 'off'}),
                     'edad': forms.NumberInput(attrs={ 'class': 'form-control','min': '18','max': '100'}),

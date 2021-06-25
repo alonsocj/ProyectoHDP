@@ -86,7 +86,7 @@ class DatosPersona(TemplateView):
                             )
             obj.activated = True
             obj.save()
-            if per != 0 or regis !=0: 
+            if per == 0 or regis ==0: 
                 messages.success(request,'Datos ingresados con exito')
             return render(request, self.template_name, {'form': form})
 
